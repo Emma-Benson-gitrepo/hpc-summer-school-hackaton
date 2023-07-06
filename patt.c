@@ -3,7 +3,7 @@
 #include <omp.h>
  
 #define FILENAME "test.txt"
-#define PATTERN "hi"
+#define PATTERN "16:4. And the third poured out his vial upon the rivers and the"
  
 char* allocate_buffer_of(size_t length)
 {
@@ -28,16 +28,13 @@ int main(int argc, char* argv[])
  
     int patternSize = sizeof(PATTERN)/sizeof(char)-1;
     printf("Pattern:\n%s, chars:%d\n", PATTERN,patternSize);
-    printf("Content of the file:\n%s\n", buffer);
 
     for(int i = 0;i<file_size;i++) 
     {
-        printf("char: %c\n",buffer[i]);
         if(buffer[i] == PATTERN[0] && buffer[i-1] == '\n')
         {
             for(int j = 1; j<patternSize;j++)
             {
-                printf("char: %c\n",buffer[i+j]);
                 if(buffer[i+j] != PATTERN[j])
                 {
                     break;
