@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
- 
+#include <omp.h> 
+
 #define FILENAME "test.txt"
  
 char* allocate_buffer_of(size_t length)
@@ -24,6 +25,17 @@ int main(int argc, char* argv[])
     fread(buffer, 1, file_size, f);
  
     printf("Content of the file:\n%s", buffer);
+   
+
+   size_t line_count = 0;
+   int i =0;
+   for(i= 0; i < file_size; i++)
+   	{
+	if (buffer[i] == '\n')
+		{
+		line_count += 1;
+		}
+	}
  
     fclose(f);
  
