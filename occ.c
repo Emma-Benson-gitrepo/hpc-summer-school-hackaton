@@ -11,6 +11,7 @@ char* allocate_buffer_of(size_t length)
  
 int main(int argc, char* argv[])
 {
+    double start = omp_get_wtime();
     FILE* f = fopen(FILENAME, "r");
     if(f == NULL)
     {
@@ -38,6 +39,7 @@ int main(int argc, char* argv[])
 	}
  
     fclose(f);
- 
+    double end = omp_get_wtime();
+    printf("time to run: %f\n",end-start);
     return EXIT_SUCCESS;
 }
