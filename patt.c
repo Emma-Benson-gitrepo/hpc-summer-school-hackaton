@@ -29,6 +29,7 @@ int main(int argc, char* argv[])
     int patternSize = sizeof(PATTERN)/sizeof(char)-1;
     printf("Pattern:\n%s, chars:%d\n", PATTERN,patternSize);
 
+    #pragma omp parallel for default(none) schedule(static) firstprivate(buffer,file_size,patternSize)
     for(int i = 0;i<file_size;i++) 
     {
         if(buffer[i] == PATTERN[0] && buffer[i-1] == '\n')
