@@ -75,7 +75,7 @@ void calculate_pagerank(Graph *graph, double pagerank[]) {
         for (i = 0; i < graph_order; i++) {
             new_pagerank[i] = 0.0;
         }
- 
+        #pragma omp parallel for default(none) firstprivate(graph_order,pagerank,graph,j) reduction(+:new_pagerank[:GRAPH_ORDER])
         for (i = 0; i < graph_order; i++) {
             for (j = 0; j < graph_order; j++) {
                 if (graph->adjacency_matrix[j][i] == 1.0) {
@@ -83,19 +83,18 @@ void calculate_pagerank(Graph *graph, double pagerank[]) {
                 }
             }
         }
- 
+
         for (i = 0; i < graph_order; i++) {
             new_pagerank[i] = DAMPING_FACTOR * new_pagerank[i] + damping_value;
         }
  
         diff = 0.0;
+        // #pragma omp parallel for default(none) firstprivate(graph_order,pagerank,new_pagerank) reduction(+:diff)
         for (i = 0; i < graph_order; i++) {
             diff += fabs(new_pagerank[i] - pagerank[i]);
         }
  
-        for (i = 0; i < graph_order; i++) {
-            pagerank[i] = new_pagerank[i];
-        }
+        pagerank = new_pagerank;
  
         #pragma omp single
         {

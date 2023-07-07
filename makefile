@@ -1,7 +1,7 @@
-ARGS= -fopenmp
+ARGS= -O2 -fopenmp
 
 default: all
-all: occ patt uniq pagerank 
+all: occ patt pagerank 
 
 occ : occ.c
 	gcc $(ARGS) -o occ occ.c
