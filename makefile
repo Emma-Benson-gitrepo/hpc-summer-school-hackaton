@@ -17,4 +17,4 @@ pagerank : pagerank.c
 	gcc $(ARGS) -o pagerank pagerank.c
 
 clean :
-	rm occ patt uniq pagerank
+	rm occ patt pagerank
