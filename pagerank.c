@@ -75,9 +75,9 @@ void calculate_pagerank(Graph *graph, double pagerank[]) {
         for (i = 0; i < graph_order; i++) {
             new_pagerank[i] = 0.0;
         }
-        #pragma omp parallel for default(none) firstprivate(graph_order,pagerank,graph,j) reduction(+:new_pagerank[:GRAPH_ORDER])
-        for (i = 0; i < graph_order; i++) {
-            for (j = 0; j < graph_order; j++) {
+        #pragma omp parallel for default(none) shared(graph_order,pagerank,graph) reduction(+:new_pagerank[:GRAPH_ORDER])
+        for (int i = 0; i < graph_order; i++) {
+            for (int j = 0; j < graph_order; j++) {
                 if (graph->adjacency_matrix[j][i] == 1.0) {
                     new_pagerank[i] += pagerank[j] / (double)outdegree(graph, j);
                 }
@@ -89,13 +89,11 @@ void calculate_pagerank(Graph *graph, double pagerank[]) {
         }
  
         diff = 0.0;
-        // #pragma omp parallel for default(none) firstprivate(graph_order,pagerank,new_pagerank) reduction(+:diff)
-        for (i = 0; i < graph_order; i++) {
+        for (int i = 0; i < graph_order; i++) {
             diff += fabs(new_pagerank[i] - pagerank[i]);
         }
  
         pagerank = new_pagerank;
- 
         #pragma omp single
         {
             double iteration_end = omp_get_wtime();
