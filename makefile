@@ -1,12 +1,20 @@
 ARGS= -fopenmp
 
 default: all
-all: occ patt
+all: occ patt uniq pagerank 
 
 occ : occ.c
 	gcc $(ARGS) -o occ occ.c
 
 patt : patt.c
 	gcc $(ARGS) -o patt patt.c
+
+uniq : uniq.c
+	gcc $(ARGS) -o uniq uniq.c
+
+
+pagerank : pagerank.c
+	gcc $(ARGS) -o pagerank pagerank.c
+
 clean :
-	rm occ patt
+	rm occ patt uniq pagerank
